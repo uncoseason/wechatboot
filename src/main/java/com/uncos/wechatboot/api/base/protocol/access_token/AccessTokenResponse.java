@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class AccessTokenResponse {
 
     private String accessToken;
-    private int ExpiresIn;
+    private int expiresIn;
 
     @JsonProperty("access_token")
     public String getAccessToken() {
@@ -21,10 +21,10 @@ public class AccessTokenResponse {
 
     @JsonProperty("expires_in")
     public int getExpiresIn() {
-        return ExpiresIn;
+        return expiresIn;
     }
 
     public void setExpiresIn(int expiresIn) {
-        ExpiresIn = expiresIn;
+        this.expiresIn = expiresIn;
     }
 }
