@@ -12,6 +12,11 @@ wechatboot.secret=be3249703b893983b2dc163a84aa9aaf
 wechatboot.token=wechatboot
 ```
 需要启用消息加密（兼容模式或安全模式）额外配置公众平台基础配置中的encodingAESKey，微信会尝试使用上一次的key进行加解密，此项支持多个key以逗号分割
+* 说明：异常java.security.InvalidKeyException:illegal Key Size的解决方案
+* 在官方网站下载JCE无限制权限策略文件，或者在[这里](https://github.com/uncoseason/wechatboot/tree/master/src/test/resources/jce_policy)获取
+* 下载后解压，可以看到local_policy.jar和US_export_policy.jar以及readme.txt
+* 如果安装了JRE，将两个jar文件放到%JRE_HOME%\lib\security目录下覆盖原来的文件
+* 如果安装了JDK，将两个jar文件放到%JDK_HOME%\jre\lib\security目录下覆盖原来文件
 ```properties
 #encoding aes key
 wechatboot.encodingAESKey=tHABwlsxDHpGfHyiFDqbEZleaP66KE95XlkTZjzqNO8,U5kKZxVS9uVE1TtrFmVGrs92a3TBMhyxfEiq8hj4yF3
