@@ -337,23 +337,7 @@ public class PayApi {
     }
 
     /**
-     * 构建扫码支付响应
-     *
-     * @param unifiedorderResponse 下单结果
-     * @return
-     */
-    private ScanPayResponse buildScanPayResponse(UnifiedorderResponse unifiedorderResponse) {
-        ScanPayResponse response = new ScanPayResponse();
-        response.setNonceStr(unifiedorderResponse.getNonceStr());
-        response.setPrepayId(unifiedorderResponse.getPrepayId());
-        response.setReturnCode(PayCode.SUCCESS);
-        response.setResultCode(PayCode.SUCCESS);
-        response.setSign(signature(response));
-        return response;
-    }
-
-    /**
-     * 统一下单（扫码支付）
+     * 统一下单（扫码支付模式一）
      *
      * @param request
      * @return
@@ -363,7 +347,13 @@ public class PayApi {
         ScanPayResponse scanPayResponse;
         UnifiedorderResponse unifiedorderResponse;
         try {
-            unifiedorderResponse = unifiedorder(request);
+            request.setSign(signature(request));
+            String xml = Http.post(API_UNIFIEDORDER, request, RequestType.XML);
+            // 出错的情况是不会返回签名的
+//            checkSignature(xml);
+            Checker.checkPay(xml);
+            Checker.checkPayResult(xml);
+            unifiedorderResponse = Converter.fromXML(xml, UnifiedorderResponse.class);
         } catch (PayException e) {
             scanPayResponse = new ScanPayResponse();
             scanPayResponse.setReturnCode(e.getReturnCode());
@@ -379,13 +369,29 @@ public class PayApi {
     }
 
     /**
-     * 统一下单（扫码支付）
+     * 统一下单（扫码支付模式一）
      *
      * @param request
      * @return
      */
     public String unifiedorderForScanXML(UnifiedorderRequest request) {
         return Converter.toXML(unifiedorderForScan(request));
+    }
+
+    /**
+     * 构建扫码支付响应（扫码支付模式一）
+     *
+     * @param unifiedorderResponse 下单结果
+     * @return
+     */
+    private ScanPayResponse buildScanPayResponse(UnifiedorderResponse unifiedorderResponse) {
+        ScanPayResponse response = new ScanPayResponse();
+        response.setNonceStr(unifiedorderResponse.getNonceStr());
+        response.setPrepayId(unifiedorderResponse.getPrepayId());
+        response.setReturnCode(PayCode.SUCCESS);
+        response.setResultCode(PayCode.SUCCESS);
+        response.setSign(signature(response));
+        return response;
     }
 
     /**
@@ -544,7 +550,8 @@ public class PayApi {
      */
     private void checkSignature(String xml) {
         Map<String, Object> map = Converter.fromXML(xml, HashMap.class);
-        if (!map.get("sign").toString().equals(signature(map))) {
+        Object sign = map.get("sign");
+        if (sign == null || !sign.toString().equals(signature(map))) {
             throw new SignatureException();
         }
     }
