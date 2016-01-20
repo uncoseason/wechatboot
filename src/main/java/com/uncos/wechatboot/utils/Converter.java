@@ -22,6 +22,7 @@ public class Converter {
     private static XmlMapper xmlMapper = new XmlMapper();
 
     static {
+        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         xmlMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         xmlMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

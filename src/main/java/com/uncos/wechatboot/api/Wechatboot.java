@@ -4,6 +4,7 @@ import com.uncos.wechatboot.api.base.BaseApi;
 import com.uncos.wechatboot.api.js.JsApi;
 import com.uncos.wechatboot.api.material.MaterialApi;
 import com.uncos.wechatboot.api.message.MessageApi;
+import com.uncos.wechatboot.api.oauth.OAuthApi;
 import com.uncos.wechatboot.api.pay.PayApi;
 import com.uncos.wechatboot.api.promotion.PromotionApi;
 import com.uncos.wechatboot.api.user.UserApi;
@@ -97,5 +98,14 @@ public class Wechatboot {
      */
     public static JsApi jsApi() {
         return JsApi.instance();
+    }
+
+    /**
+     * OAuth认证API
+     *
+     * @return
+     */
+    public static OAuthApi oAuthApi() {
+        return OAuthApi.instance();
     }
 }

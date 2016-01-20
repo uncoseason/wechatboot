@@ -44,6 +44,11 @@ public class TestControllerStarter {
         System.out.println("成功解析微信支付结果回调\n" + Converter.toXML(payResultNotifyResponse));
     }
 
+    @RequestMapping("oauth")
+    public void oauthCode(String code, String state){
+        System.out.println(String.format("接收到微信OAuth回调\ncode=%s\nstate=%s", code, state));
+    }
+
     /**
      * 扫码支付回调
      *
