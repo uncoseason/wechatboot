@@ -2,6 +2,7 @@ package com.uncos.wechatboot.feedback;
 
 import com.uncos.wechatboot.api.Wechatboot;
 import com.uncos.wechatboot.api.pay.protocol.pay_result_notify.PayResultNotifyResponse;
+import com.uncos.wechatboot.api.pay.protocol.scan_pay.ScanCallbackResponse;
 import com.uncos.wechatboot.api.pay.protocol.unifiedorder.UnifiedorderRequest;
 import com.uncos.wechatboot.api.pay.protocol.unifiedorder.UnifiedorderResponse;
 import com.uncos.wechatboot.common.PaymentParameter;
@@ -36,10 +37,39 @@ public class TestControllerStarter {
         return new TestWechatbootServlet().feedback(httpServletRequest);
     }
 
-    @RequestMapping("payResultNotify")
+    @RequestMapping(value = "payResultNotify")
     public void payResultNotify(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws PayException, PayResultException {
         PayResultNotifyResponse payResultNotifyResponse = Wechatboot.payApi().parsePayResultNotify(httpServletRequest, httpServletResponse);
         System.out.println("成功解析微信支付结果回调\n" + Converter.toXML(payResultNotifyResponse));
+    }
+
+    /**
+     * 扫码支付回调
+     *
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "eduboss/WeiXinController/scanPayCallback")
+    public String scanPay(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
+        ScanCallbackResponse scanCallbackResponse = Wechatboot.payApi().parseScanCallback(httpServletRequest);
+        System.out.println("收到扫码支付回调\n" + Converter.toXML(scanCallbackResponse));
+        UnifiedorderRequest unifiedorderRequest = new UnifiedorderRequest();
+        unifiedorderRequest.setNonceStr(RandomStringGenerator.generate());
+        unifiedorderRequest.setBody("iPhone100 S PLUS");
+        unifiedorderRequest.setDetail("黑科技产品");
+        unifiedorderRequest.setAttach("我是商户"); // 随便写，会原样带回
+        unifiedorderRequest.setOutTradeNo(RandomStringGenerator.generate()); // 我们自己的交易订单号
+        unifiedorderRequest.setTotalFee(1); // 钱，单位是分
+        unifiedorderRequest.setSpbillCreateIp("127.0.0.1");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        unifiedorderRequest.setTimeStart(sdf.format(new Date()));
+        unifiedorderRequest.setTradeType(TradeType.NATIVE);
+        unifiedorderRequest.setOpenid("o40dZwL6Ik_ZsDfANjkAqd5MPpN4");
+        unifiedorderRequest.setNotifyUrl("http://uncoseason.xicp.net/payResultNotify");
+        // 响应扫码下单结果
+        String responseXML = Wechatboot.payApi().unifiedorderForScanXML(unifiedorderRequest);
+        System.out.println("响应扫码下单结果（扫码支付模式一）\n" + responseXML);
+        return responseXML;
     }
 
     /**

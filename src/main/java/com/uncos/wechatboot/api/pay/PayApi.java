@@ -15,11 +15,15 @@ import com.uncos.wechatboot.api.pay.protocol.refundquery.RefundqueryRequest;
 import com.uncos.wechatboot.api.pay.protocol.refundquery.RefundqueryResponse;
 import com.uncos.wechatboot.api.pay.protocol.report.ReportRequest;
 import com.uncos.wechatboot.api.pay.protocol.report.ReportResponse;
+import com.uncos.wechatboot.api.pay.protocol.scan_pay.ScanCallbackResponse;
+import com.uncos.wechatboot.api.pay.protocol.scan_pay.ScanPayRequest;
+import com.uncos.wechatboot.api.pay.protocol.scan_pay.ScanPayResponse;
 import com.uncos.wechatboot.api.pay.protocol.unifiedorder.UnifiedorderRequest;
 import com.uncos.wechatboot.api.pay.protocol.unifiedorder.UnifiedorderResponse;
 import com.uncos.wechatboot.common.PayCode;
 import com.uncos.wechatboot.common.PaymentParameter;
 import com.uncos.wechatboot.common.RequestType;
+import com.uncos.wechatboot.common.TradeType;
 import com.uncos.wechatboot.exception.PayException;
 import com.uncos.wechatboot.exception.PayResultException;
 import com.uncos.wechatboot.exception.SignatureException;
@@ -33,10 +37,8 @@ import org.apache.commons.io.IOUtils;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -61,6 +63,8 @@ public class PayApi {
     private static final String API_DOWNLOADBILL = "https://api.mch.weixin.qq.com/pay/downloadbill";
     /*测速上报*/
     private static final String API_REPORT = "https://api.mch.weixin.qq.com/payitil/report";
+    /*生成扫码支付链接*/
+    private static final String API_SCAN_PAY = "weixin://wxpay/bizpayurl?sign=XXXXX&appid=XXXXX&mch_id=XXXXX&product_id=XXXXXX&time_stamp=XXXXXX&nonce_str=XXXXX";
 
     private static PayApi instance = new PayApi();
 
@@ -238,14 +242,15 @@ public class PayApi {
         PayException exception = new PayException(PayCode.SUCCESS, "OK");
         String xml;
         try {
-            int len;
-            byte[] b = new byte[1024];
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            InputStream servletInputStream = servletRequest.getInputStream();
-            while ((len = servletInputStream.read(b)) != -1) {
-                stream.write(b, 0, len);
-            }
-            xml = stream.toString(Wechatboot.charset().name());
+//            int len;
+//            byte[] b = new byte[1024];
+//            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//            InputStream servletInputStream = servletRequest.getInputStream();
+//            while ((len = servletInputStream.read(b)) != -1) {
+//                stream.write(b, 0, len);
+//            }
+            xml = IOUtils.toString(servletRequest.getInputStream(), Wechatboot.charset());
+//            xml = stream.toString(Wechatboot.charset().name());
         } catch (IOException e) {
             exception = new PayException(PayCode.FAIL, "支付结果通知数据解析失败");
             responseToWechat(servletResponse, Converter.toXML(exception));
@@ -270,6 +275,117 @@ public class PayApi {
         }
         responseToWechat(servletResponse, Converter.toXML(exception));
         return response;
+    }
+
+    /**
+     * 解析扫码支付回调
+     *
+     * @param servletRequest
+     * @return
+     */
+    public ScanCallbackResponse parseScanCallback(ServletRequest servletRequest) throws PayException {
+        PayException exception;
+        String xml;
+        try {
+            xml = IOUtils.toString(servletRequest.getInputStream(), Wechatboot.charset());
+        } catch (IOException e) {
+            exception = new PayException(PayCode.FAIL, "支付结果通知数据解析失败");
+            throw exception;
+        }
+        ScanCallbackResponse response = Converter.fromXML(xml, ScanCallbackResponse.class);
+        return response;
+    }
+
+    /**
+     * 构建扫码支付URL
+     *
+     * @param request
+     * @return
+     */
+    public String buildScanPayUrl(ScanPayRequest request) {
+        request.setSign(signature(request));
+        return Http.buildObjectParamURL(API_SCAN_PAY, request);
+    }
+
+    /**
+     * 构建扫码支付URL
+     *
+     * @param productId 商户定义的商品id 或者订单号
+     * @return
+     */
+    public String buildScanPayUrl(String productId) {
+        ScanPayRequest request = new ScanPayRequest();
+        request.setProductId(productId);
+        request.setTimeStamp(String.valueOf(new Date().getTime() / 1000));
+        request.setNonceStr(RandomStringGenerator.generate());
+        return buildScanPayUrl(request);
+    }
+
+    /**
+     * 构建H5调用支付的参数对象
+     *
+     * @param prepayId
+     * @return
+     */
+    public PaymentParameter buildPaymentParameter(String prepayId) {
+        PaymentParameter config = new PaymentParameter();
+        config.setTimeStamp(String.valueOf(new Date().getTime() / 1000));
+        config.setNonceStr(RandomStringGenerator.generate());
+        config.setPackageWithPrepayId("prepay_id=" + prepayId);
+        config.setPaySign(signature(config));
+        return config;
+    }
+
+    /**
+     * 构建扫码支付响应
+     *
+     * @param unifiedorderResponse 下单结果
+     * @return
+     */
+    private ScanPayResponse buildScanPayResponse(UnifiedorderResponse unifiedorderResponse) {
+        ScanPayResponse response = new ScanPayResponse();
+        response.setNonceStr(unifiedorderResponse.getNonceStr());
+        response.setPrepayId(unifiedorderResponse.getPrepayId());
+        response.setReturnCode(PayCode.SUCCESS);
+        response.setResultCode(PayCode.SUCCESS);
+        response.setSign(signature(response));
+        return response;
+    }
+
+    /**
+     * 统一下单（扫码支付）
+     *
+     * @param request
+     * @return
+     */
+    public ScanPayResponse unifiedorderForScan(UnifiedorderRequest request) {
+        request.setTradeType(TradeType.NATIVE);
+        ScanPayResponse scanPayResponse;
+        UnifiedorderResponse unifiedorderResponse;
+        try {
+            unifiedorderResponse = unifiedorder(request);
+        } catch (PayException e) {
+            scanPayResponse = new ScanPayResponse();
+            scanPayResponse.setReturnCode(e.getReturnCode());
+            scanPayResponse.setReturnMsg(e.getReturnMsg());
+            return scanPayResponse;
+        } catch (PayResultException e) {
+            scanPayResponse = new ScanPayResponse();
+            scanPayResponse.setResultCode(e.getResultCode());
+            scanPayResponse.setErrCodeDes(e.getErrCodeDes());
+            return scanPayResponse;
+        }
+        return buildScanPayResponse(unifiedorderResponse);
+    }
+
+    /**
+     * 统一下单（扫码支付）
+     *
+     * @param request
+     * @return
+     */
+    public String unifiedorderForScanXML(UnifiedorderRequest request) {
+        return Converter.toXML(unifiedorderForScan(request));
     }
 
     /**
@@ -419,21 +535,6 @@ public class PayApi {
         refundqueryResponse.setCouponRefundId$n$m(coupon_refund_id_$n_$m);
         refundqueryResponse.setCouponRefundFee$n$m(coupon_refund_fee_$n_$m);
         refundqueryResponse.setRefundStatus$n(refund_status_$n);
-    }
-
-    /**
-     * 构造H5调用支付的参数对象
-     *
-     * @param prepayId
-     * @return
-     */
-    public PaymentParameter buildPaymentParameter(String prepayId) {
-        PaymentParameter config = new PaymentParameter();
-        config.setTimeStamp(String.valueOf(new Date().getTime() / 1000));
-        config.setNonceStr(RandomStringGenerator.generate());
-        config.setPackageWithPrepayId("prepay_id=" + prepayId);
-        config.setPaySign(signature(config));
-        return config;
     }
 
     /**

@@ -120,9 +120,33 @@ public class PayApiTest {
     }
 
     @Test
-    public void testPaymentParams() {
+    public void testBuildPaymentParams() {
         PaymentParameter paymentParameter = Wechatboot.payApi().buildPaymentParameter("12345679");
         System.out.println("测试 构建H5支付参数\n" + Converter.toJSON(paymentParameter));
     }
 
+    @Test
+    public void testBuildScanPayUrl() {
+        String scanPayUrl = Wechatboot.payApi().buildScanPayUrl(RandomStringGenerator.generate());
+        System.out.println("测试 构建扫码支付URL（扫码支付模式一）\t" + scanPayUrl);
+    }
+
+    @Test
+    public void testCodeUrlPayUrl() throws Exception{
+        UnifiedorderRequest unifiedorderRequest = new UnifiedorderRequest();
+        unifiedorderRequest.setNonceStr(RandomStringGenerator.generate());
+        unifiedorderRequest.setBody("iPhone100 S PLUS");
+        unifiedorderRequest.setDetail("黑科技产品");
+        unifiedorderRequest.setAttach("我是商户"); // 随便写，会原样带回
+        unifiedorderRequest.setOutTradeNo(RandomStringGenerator.generate()); // 我们自己的交易订单号
+        unifiedorderRequest.setTotalFee(1); // 钱，单位是分
+        unifiedorderRequest.setSpbillCreateIp("127.0.0.1");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        unifiedorderRequest.setTimeStart(sdf.format(new Date()));
+        unifiedorderRequest.setTradeType(TradeType.NATIVE);
+        unifiedorderRequest.setOpenid("o40dZwL6Ik_ZsDfANjkAqd5MPpN4");
+        unifiedorderRequest.setNotifyUrl("http://uncoseason.xicp.net/eduboss/WeiXinController/payCallback.do");
+        UnifiedorderResponse unifiedorderResponse = Wechatboot.payApi().unifiedorder(unifiedorderRequest);
+        System.out.println("测试 统一下单（扫码支付模式二）\n" + Converter.toXML(unifiedorderResponse));
+    }
 }

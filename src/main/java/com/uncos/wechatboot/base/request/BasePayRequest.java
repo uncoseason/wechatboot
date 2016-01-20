@@ -1,5 +1,6 @@
 package com.uncos.wechatboot.base.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlCData;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.uncos.wechatboot.api.Wechatboot;
@@ -13,6 +14,7 @@ public class BasePayRequest extends BaseAppidRequest {
     protected String nonceStr;
     protected String sign;
 
+    @JsonProperty("mch_id")
     @JacksonXmlProperty(localName = "mch_id")
     @JacksonXmlCData
     public String getMchId() {
@@ -23,6 +25,7 @@ public class BasePayRequest extends BaseAppidRequest {
         this.mchId = mchId;
     }
 
+    @JsonProperty("nonce_str")
     @JacksonXmlProperty(localName = "nonce_str")
     @JacksonXmlCData
     public String getNonceStr() {
@@ -33,6 +36,7 @@ public class BasePayRequest extends BaseAppidRequest {
         this.nonceStr = nonceStr;
     }
 
+    @JacksonXmlCData
     public String getSign() {
         return sign;
     }
