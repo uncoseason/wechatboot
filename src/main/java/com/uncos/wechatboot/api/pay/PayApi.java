@@ -242,15 +242,7 @@ public class PayApi {
         PayException exception = new PayException(PayCode.SUCCESS, "OK");
         String xml;
         try {
-//            int len;
-//            byte[] b = new byte[1024];
-//            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//            InputStream servletInputStream = servletRequest.getInputStream();
-//            while ((len = servletInputStream.read(b)) != -1) {
-//                stream.write(b, 0, len);
-//            }
             xml = IOUtils.toString(servletRequest.getInputStream(), Wechatboot.charset());
-//            xml = stream.toString(Wechatboot.charset().name());
         } catch (IOException e) {
             exception = new PayException(PayCode.FAIL, "支付结果通知数据解析失败");
             responseToWechat(servletResponse, Converter.toXML(exception));

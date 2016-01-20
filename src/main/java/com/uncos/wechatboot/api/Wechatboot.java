@@ -1,6 +1,7 @@
 package com.uncos.wechatboot.api;
 
 import com.uncos.wechatboot.api.base.BaseApi;
+import com.uncos.wechatboot.api.js.JsApi;
 import com.uncos.wechatboot.api.material.MaterialApi;
 import com.uncos.wechatboot.api.message.MessageApi;
 import com.uncos.wechatboot.api.pay.PayApi;
@@ -87,5 +88,14 @@ public class Wechatboot {
      */
     public static PayApi payApi() {
         return PayApi.instance();
+    }
+
+    /**
+     * JS API
+     *
+     * @return
+     */
+    public static JsApi jsApi() {
+        return JsApi.instance();
     }
 }

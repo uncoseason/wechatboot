@@ -5,6 +5,7 @@ import com.uncos.wechatboot.api.pay.protocol.pay_result_notify.PayResultNotifyRe
 import com.uncos.wechatboot.api.pay.protocol.scan_pay.ScanCallbackResponse;
 import com.uncos.wechatboot.api.pay.protocol.unifiedorder.UnifiedorderRequest;
 import com.uncos.wechatboot.api.pay.protocol.unifiedorder.UnifiedorderResponse;
+import com.uncos.wechatboot.common.JsApiParameter;
 import com.uncos.wechatboot.common.PaymentParameter;
 import com.uncos.wechatboot.common.TradeType;
 import com.uncos.wechatboot.exception.PayException;
@@ -131,6 +132,56 @@ public class TestControllerStarter {
         sb.append("    );                                                                            ");
         sb.append("}                                                                                 ");
         sb.append("</script>                                                                         ");
+        return sb.toString();
+    }
+
+    @RequestMapping(value = "eduboss/WeiXinController/jssdkPage")
+    public String jssdkPage() throws Exception{
+        JsApiParameter jsApiParameter = Wechatboot.jsApi().signatureUrl("http://uncoseason.xicp.net/eduboss/WeiXinController/jssdkPage");
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html>                                                                                                                                                                                                       ");
+        sb.append("<head>                                                                                                                                                                                                       ");
+        sb.append("<title>JS SDK Page</title>                                                                                                                                                                                   ");
+        sb.append("</head>                                                                                                                                                                                                      ");
+        sb.append("<body>                                                                                                                                                                                                       ");
+        sb.append("       JS SDK Page                                                                                                                                                                                          ");
+        sb.append("</body>                                                                                                                                                                                                      ");
+        sb.append("<script src=\"http://res.wx.qq.com/open/js/jweixin-1.0.0.js\"></script>                                                                                                                                        ");
+        sb.append("<script>                                                                                                                                                                                                     ");
+        sb.append("        wx.config({                                                                                                                                                                                          ");
+        sb.append("                debug: true,                                                                                                                                                                                 ");
+        sb.append("        appId: '"+ jsApiParameter.getAppId() +"',                                                                                                                                                                                      ");
+        sb.append("        timestamp: '"+ jsApiParameter.getTimestamp() +"',                                                                                                                                                                              ");
+        sb.append("        nonceStr: '"+ jsApiParameter.getNonceStr() +"',                                                                                                                                                                                ");
+        sb.append("        signature: '"+ jsApiParameter.getSignature() +"',                                                                                                                                                                              ");
+        sb.append("        jsApiList: [                                                                                                                                                                                         ");
+        sb.append("'checkJsApi',                                                                                                                                                                                                ");
+        sb.append("        'onMenuShareAppMessage'                                                                                                                                                                              ");
+        sb.append("]                                                                                                                                                                                                            ");
+        sb.append("});                                                                                                                                                                                                          ");
+        sb.append("wx.ready(function () {                                                                                                                                                                                       ");
+        sb.append("    wx.onMenuShareAppMessage({                                                                                                                                                                               ");
+        sb.append("            title: '互联网之子',                                                                                                                                                                                  ");
+        sb.append("            desc: '在长大的过程中，我才慢慢发现，我身边的所有事，别人跟我说的所有事，那些所谓本来如此，注定如此的事，它们其实没有非得如此，事情是可以改变的。更重要的是，有些事既然错了，那就该做出改变。',                                                                                             ");
+        sb.append("            link: 'http://movie.douban.com/subject/25785114/',                                                                                                                                               ");
+        sb.append("            imgUrl: 'http://demo.open.weixin.qq.com/jssdk/images/p2166127561.jpg',                                                                                                                           ");
+        sb.append("            trigger: function (res) {  alert('用户点击发送给朋友');                                                                                                                                                                           ");
+        sb.append("        /*不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回*/                                                                                                                              ");
+        sb.append("    },                                                                                                                                                                                                       ");
+        sb.append("    success: function (res) {                                                                                                                                                                                ");
+        sb.append("        alert('已分享');                                                                                                                                                                                        ");
+        sb.append("    },                                                                                                                                                                                                       ");
+        sb.append("    cancel: function (res) {                                                                                                                                                                                 ");
+        sb.append("        alert('已取消');                                                                                                                                                                                        ");
+        sb.append("    },                                                                                                                                                                                                       ");
+        sb.append("    fail: function (res) {                                                                                                                                                                                   ");
+        sb.append("        alert(JSON.stringify(res));                                                                                                                                                                          ");
+        sb.append("    }                                                                                                                                                                                                        ");
+        sb.append("    });                                                                                                                                                                                                      ");
+        sb.append("    alert('已注册获取“发送给朋友”状态事件');                                                                                                                                                                               ");
+        sb.append("})                                                                                                                                                                                                           ");
+        sb.append("</script>                                                                                                                                                                                                    ");
+        sb.append("</html>                                                                                                                                                                                                      ");
         return sb.toString();
     }
 
