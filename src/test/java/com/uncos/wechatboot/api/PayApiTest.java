@@ -121,7 +121,7 @@ public class PayApiTest {
 
     @Test
     public void testPaymentParams() {
-        PaymentParameter paymentParameter = Wechatboot.payApi().paymentParameter(String.valueOf(new Date().getTime()), RandomStringGenerator.generate(), "12345679");
+        PaymentParameter paymentParameter = Wechatboot.payApi().buildPaymentParameter("12345679");
         System.out.println("测试 构建H5支付参数\n" + Converter.toJSON(paymentParameter));
     }
 

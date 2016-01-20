@@ -26,6 +26,7 @@ import com.uncos.wechatboot.exception.SignatureException;
 import com.uncos.wechatboot.utils.Checker;
 import com.uncos.wechatboot.utils.Converter;
 import com.uncos.wechatboot.utils.Http;
+import com.uncos.wechatboot.utils.RandomStringGenerator;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -423,15 +424,13 @@ public class PayApi {
     /**
      * 构造H5调用支付的参数对象
      *
-     * @param timeStamp
-     * @param nonceStr
      * @param prepayId
      * @return
      */
-    public PaymentParameter paymentParameter(String timeStamp, String nonceStr, String prepayId) {
+    public PaymentParameter buildPaymentParameter(String prepayId) {
         PaymentParameter config = new PaymentParameter();
-        config.setTimeStamp(timeStamp);
-        config.setNonceStr(nonceStr);
+        config.setTimeStamp(String.valueOf(new Date().getTime() / 1000));
+        config.setNonceStr(RandomStringGenerator.generate());
         config.setPackageWithPrepayId("prepay_id=" + prepayId);
         config.setPaySign(signature(config));
         return config;

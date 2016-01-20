@@ -48,7 +48,7 @@ public class TestControllerStarter {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "payPath/payPage")
+    @RequestMapping(value = "eduboss/WeiXinController/payPage")
     public String payPage() throws Exception {
         // 统一下单
         UnifiedorderRequest unifiedorderRequest = new UnifiedorderRequest();
@@ -65,7 +65,7 @@ public class TestControllerStarter {
         unifiedorderRequest.setOpenid("o40dZwL6Ik_ZsDfANjkAqd5MPpN4");
         unifiedorderRequest.setNotifyUrl("http://uncoseason.xicp.net/payResultNotify");
         UnifiedorderResponse unifiedorderResponse = Wechatboot.payApi().unifiedorder(unifiedorderRequest);
-        PaymentParameter paymentParameter = Wechatboot.payApi().paymentParameter(String.valueOf(new Date().getTime()), unifiedorderResponse.getNonceStr(), unifiedorderResponse.getPrepayId());
+        PaymentParameter paymentParameter = Wechatboot.payApi().buildPaymentParameter(unifiedorderResponse.getPrepayId());
         StringBuffer sb = new StringBuffer();
         sb.append("Pay Page                                                                          ");
         sb.append("        <script>                                                                  ");
