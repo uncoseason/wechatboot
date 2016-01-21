@@ -386,7 +386,7 @@ public class WechatbootServlet extends HttpServlet {
         article.setDescription(description);
         article.setPicUrl(picUrl);
         article.setUrl(url);
-        ArrayList<Article> articles = new ArrayList<>(1);
+        ArrayList<Article> articles = new ArrayList<Article>(1);
         articles.add(article);
         return createNewsResponse(articles);
     }

@@ -50,7 +50,7 @@ public class UserApiTest {
     @Test
     public void testGroupsMembersBatchupdate() throws WechatException {
         GroupsCreateResponse groupsCreateResponse = Wechatboot.userApi().groupsCreate("分组" + RandomStringGenerator.generate(10));
-        List<String> openidList = new ArrayList<>();
+        List<String> openidList = new ArrayList<String>();
         openidList.add("ouP0Yv3rPy5xPnzLD45g3psCJqZQ");
         Wechatboot.userApi().groupsMembersBatchupdate(openidList, groupsCreateResponse.getGroup().getId());
         System.out.println("测试 批量移动用户分组");

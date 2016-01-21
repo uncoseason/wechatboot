@@ -31,7 +31,7 @@ public class JsApi {
     public JsApiParameter signatureUrl(String url) {
         String nonceStr = RandomStringGenerator.generate();
         String timeStamp = String.valueOf((System.currentTimeMillis() / 1000));
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<String, String>();
         map.put("jsapi_ticket", CredentialCenter.jsapiTicket());
         map.put("noncestr", nonceStr);
         map.put("timestamp", timeStamp);

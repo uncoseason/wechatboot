@@ -352,7 +352,7 @@ public class UserApi {
      */
     public UserInfoBatchgetResponse userInfoBatchget(Lang lang, String... openids) throws WechatException {
         UserInfoBatchgetRequest request = new UserInfoBatchgetRequest();
-        List<UserInfoRequest> userList = new ArrayList<>(openids.length);
+        List<UserInfoRequest> userList = new ArrayList<UserInfoRequest>(openids.length);
         for (String openid : openids) {
             UserInfoRequest userInfoRequest = new UserInfoRequest();
             userInfoRequest.setLang(lang);

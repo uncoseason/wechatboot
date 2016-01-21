@@ -52,7 +52,7 @@ public class MessageApiTest {
         Wechatboot.messageApi().sendNewsMessage("ouP0Yv3rPy5xPnzLD45g3psCJqZQ", "图文标题", "图文介绍", "http://mp.weixin.qq.com/debug/zh_CN/htmledition/images/bg/bg_logo1f2fc8.png", "http://mp.weixin.qq.com/wiki/home/index.html");
         System.out.println("测试 发送图文消息");
 
-        List<Article> articles = new ArrayList<>();
+        List<Article> articles = new ArrayList<Article>();
         Article article1 = new Article();
         article1.setTitle("图文标题1");
         article1.setDescription("图文介绍1");

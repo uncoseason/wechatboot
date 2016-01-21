@@ -4,12 +4,9 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlCData;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.uncos.wechatboot.base.request.BaseRefundRequest;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 /**
  * Created by xuwen on 2016/1/19.
  */
-@XmlRootElement(name = "xml")
 public class RefundqueryRequest extends BaseRefundRequest {
 
     private String refundId;

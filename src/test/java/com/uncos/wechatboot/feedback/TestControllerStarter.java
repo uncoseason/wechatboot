@@ -32,7 +32,7 @@ public class TestControllerStarter {
         SpringApplication.run(TestControllerStarter.class);
     }
 
-    @RequestMapping("/wechatboot")
+    @RequestMapping("eduboss/WeiXinController/wechatboot")
     public String dispatcherServlet(HttpServletRequest httpServletRequest) {
         return new TestWechatbootServlet().feedback(httpServletRequest);
     }
@@ -44,7 +44,7 @@ public class TestControllerStarter {
     }
 
     @RequestMapping("oauth")
-    public void oauthCode(String code, String state){
+    public void oauthCode(String code, String state) {
         System.out.println(String.format("接收到微信OAuth回调\ncode=%s\nstate=%s", code, state));
     }
 
@@ -138,7 +138,7 @@ public class TestControllerStarter {
     }
 
     @RequestMapping(value = "eduboss/WeiXinController/jssdkPage")
-    public String jssdkPage() throws Exception{
+    public String jssdkPage() throws Exception {
         JsApiParameter jsApiParameter = Wechatboot.jsApi().signatureUrl("http://uncoseason.xicp.net/eduboss/WeiXinController/jssdkPage");
         StringBuilder sb = new StringBuilder();
         sb.append("<html>                                                                                                                                                                                                       ");
@@ -152,10 +152,10 @@ public class TestControllerStarter {
         sb.append("<script>                                                                                                                                                                                                     ");
         sb.append("        wx.config({                                                                                                                                                                                          ");
         sb.append("                debug: true,                                                                                                                                                                                 ");
-        sb.append("        appId: '"+ jsApiParameter.getAppId() +"',                                                                                                                                                                                      ");
-        sb.append("        timestamp: '"+ jsApiParameter.getTimestamp() +"',                                                                                                                                                                              ");
-        sb.append("        nonceStr: '"+ jsApiParameter.getNonceStr() +"',                                                                                                                                                                                ");
-        sb.append("        signature: '"+ jsApiParameter.getSignature() +"',                                                                                                                                                                              ");
+        sb.append("        appId: '" + jsApiParameter.getAppId() + "',                                                                                                                                                                                      ");
+        sb.append("        timestamp: '" + jsApiParameter.getTimestamp() + "',                                                                                                                                                                              ");
+        sb.append("        nonceStr: '" + jsApiParameter.getNonceStr() + "',                                                                                                                                                                                ");
+        sb.append("        signature: '" + jsApiParameter.getSignature() + "',                                                                                                                                                                              ");
         sb.append("        jsApiList: [                                                                                                                                                                                         ");
         sb.append("'checkJsApi',                                                                                                                                                                                                ");
         sb.append("        'onMenuShareAppMessage'                                                                                                                                                                              ");

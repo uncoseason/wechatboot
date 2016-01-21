@@ -206,7 +206,7 @@ public class MessageApi {
      * @throws WechatException
      */
     public void sendNewsMessage(String touser, String title, String description, String picUrl, String url) throws WechatException {
-        List<Article> news = new ArrayList<>();
+        List<Article> news = new ArrayList<Article>();
         Article article = new Article();
         article.setTitle(title);
         article.setDescription(description);
