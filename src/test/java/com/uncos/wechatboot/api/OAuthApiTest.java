@@ -23,7 +23,7 @@ public class OAuthApiTest {
         System.out.println("测试 生成OAuth重定向URI（用户同意授权，获取code）" + Wechatboot.oAuthApi().buildRedirectUri("http://uncoseason.xicp.net/oauth", OAuthScope.snsapi_userinfo, "test info"));
     }
 
-    @Test
+//    @Test
     public void testOAuth() throws WechatException {
         // 这个用例需要重定向URI带回的code参数
         String code = "021b620732dd3897dda62121411b256z";

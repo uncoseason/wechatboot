@@ -27,15 +27,15 @@ import org.junit.Test;
 import java.io.IOException;
 
 /**
- * 支付API测试
- * 所有测试用例都需要配置以下项
- * wechatboot.mchId    商户ID
- * wechatboot.mchKey   商户API KEY
- * Created by xuwen on 2016/1/19.
- */
+* 支付API测试
+* 所有测试用例都需要配置以下项
+* wechatboot.mchId    商户ID
+* wechatboot.mchKey   商户API KEY
+* Created by xuwen on 2016/1/19.
+*/
 public class PayApiTest {
 
-    @Test
+//    @Test
     public void testOrder() throws PayException, PayResultException {
         String outTradeNo = RandomStringGenerator.generate();
         // 统一下单
@@ -69,7 +69,7 @@ public class PayApiTest {
         System.out.println("测试 关闭订单\n" + Converter.toXML(closeorderResponse));
     }
 
-    @Test
+//    @Test
     public void testReport() throws PayException, PayResultException {
         ReportRequest reportRequest = new ReportRequest();
         reportRequest.setNonceStr(RandomStringGenerator.generate());
@@ -85,7 +85,7 @@ public class PayApiTest {
         System.out.println("测试 测速上报\n" + Converter.toXML(reportResponse));
     }
 
-    @Test
+//    @Test
     public void testDownloadbill() throws PayException, IOException {
         DownloadbillRequest downloadbillRequest = new DownloadbillRequest();
         downloadbillRequest.setNonceStr(RandomStringGenerator.generate());
@@ -95,7 +95,7 @@ public class PayApiTest {
         System.out.println("测试 下载对账单\n" + downloadbillResponse.getFile().getAbsolutePath());
     }
 
-    @Test
+//    @Test
     public void testRefund() throws PayException, PayResultException {
         String transactionId = "1000080905201512112018328757";
         // 此用例需要安装商户证书（否则会返回HTTP443），并获取一个真实的交易ID
@@ -117,19 +117,19 @@ public class PayApiTest {
         System.out.println("测试 查询退款\n" + Converter.toXML(refundqueryResponse));
     }
 
-    @Test
+//    @Test
     public void testBuildPaymentParams() {
         PaymentParameter paymentParameter = Wechatboot.payApi().buildPaymentParameter("12345679");
         System.out.println("测试 构建H5支付参数\n" + Converter.toJSON(paymentParameter));
     }
 
-    @Test
+//    @Test
     public void testBuildScanPayUrl() {
         String scanPayUrl = Wechatboot.payApi().buildScanPayUrl(RandomStringGenerator.generate());
         System.out.println("测试 构建扫码支付URL（扫码支付模式一）\t" + scanPayUrl);
     }
 
-    @Test
+//    @Test
     public void testCodeUrlPayUrl() throws Exception{
         UnifiedorderRequest unifiedorderRequest = new UnifiedorderRequest();
         unifiedorderRequest.setNonceStr(RandomStringGenerator.generate());
