@@ -5,11 +5,11 @@ wechatboot
 Classpath下加入wechatboot.properties
 ```properties
 #appid
-wechatboot.appid=wxb787f36435a39be2
+wechatboot.appid=your appid
 #secret
-wechatboot.secret=be3249703b893983b2dc163a84aa9aaf
+wechatboot.secret=your secret
 #token
-wechatboot.token=wechatboot
+wechatboot.token=your token
 ```
 需要启用消息加密（兼容模式或安全模式）额外配置公众平台基础配置中的encodingAESKey，微信会尝试使用上一次的key进行加解密，此项支持多个key以逗号分割
 * 说明：异常java.security.InvalidKeyException:illegal Key Size的解决方案
@@ -31,16 +31,16 @@ wechat.mch.key=
 ##代码配置
 可以在任何时候通过API访问配置对象来加载新的配置
 ```java
-Wechatboot.config().setAppid("wxb787f36435a39be2");
-Wechatboot.config().setSecret("be3249703b893983b2dc163a84aa9aaf");
-Wechatboot.config().setToken("edubossPlatform");
+Wechatboot.config().setAppid("your appid");
+Wechatboot.config().setSecret("your appid");
+Wechatboot.config().setToken("your token");
 ```
 ##通过Spring来配置
 ``` xml
 <bean class="com.uncos.wechatboot.common.Config" factory-method="instance">
-	<property name="appid" value="wxb787f36435a39be2"/>
-	<property name="secret" value="be3249703b893983b2dc163a84aa9aaf"/>
-	<property name="token" value="edubossPlatform"/>
+	<property name="appid" value="your appid"/>
+	<property name="secret" value="your appid"/>
+	<property name="token" value="your token"/>
 </bean>
 ```
 #消息后台
