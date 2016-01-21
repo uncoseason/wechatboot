@@ -217,19 +217,19 @@ public class Http {
                 }
                 String fieldName = field.getName();
                 String fieldValue = null;
-                JsonProperty jsonProerty;
+                JsonProperty jsonProperty;
                 try {
                     Method getMethod = clazz.getDeclaredMethod("get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1));
                     if (getMethod != null) {
                         if (getMethod.isAnnotationPresent(JsonIgnore.class)) {
                             continue;
                         }
-                        jsonProerty = getMethod.getAnnotation(JsonProperty.class);
+                        jsonProperty = getMethod.getAnnotation(JsonProperty.class);
                     } else {
-                        jsonProerty = field.getAnnotation(JsonProperty.class);
+                        jsonProperty = field.getAnnotation(JsonProperty.class);
                     }
-                    if (jsonProerty != null) {
-                        fieldName = jsonProerty.value();
+                    if (jsonProperty != null) {
+                        fieldName = jsonProperty.value();
                     }
                 } catch (NoSuchMethodException e) {
                     // skip this
