@@ -35,12 +35,12 @@ public class WechatbootServlet extends HttpServlet {
     private static Logger logger = LoggerFactory.getLogger(WechatbootServlet.class);
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected final void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         this.doPost(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected final void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         IOUtils.write(feedback(req), resp.getOutputStream(), Wechatboot.charset());
     }
 
