@@ -27,10 +27,7 @@ import com.uncos.wechatboot.common.TradeType;
 import com.uncos.wechatboot.exception.PayException;
 import com.uncos.wechatboot.exception.PayResultException;
 import com.uncos.wechatboot.exception.SignatureException;
-import com.uncos.wechatboot.utils.Checker;
-import com.uncos.wechatboot.utils.Converter;
-import com.uncos.wechatboot.utils.Http;
-import com.uncos.wechatboot.utils.RandomStringGenerator;
+import com.uncos.wechatboot.utils.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -308,7 +305,7 @@ public class PayApi {
     public String buildScanPayUrl(String productId) {
         ScanPayRequest request = new ScanPayRequest();
         request.setProductId(productId);
-        request.setTimeStamp(String.valueOf(new Date().getTime() / 1000));
+        request.setTimeStamp(DateUtils.getWechatTimestamp());
         request.setNonceStr(RandomStringGenerator.generate());
         return buildScanPayUrl(request);
     }
@@ -321,7 +318,7 @@ public class PayApi {
      */
     public PaymentParameter buildPaymentParameter(String prepayId) {
         PaymentParameter config = new PaymentParameter();
-        config.setTimeStamp(String.valueOf(new Date().getTime() / 1000));
+        config.setTimeStamp(DateUtils.getWechatTimestamp());
         config.setNonceStr(RandomStringGenerator.generate());
         config.setPackageWithPrepayId("prepay_id=" + prepayId);
         config.setPaySign(signature(config));

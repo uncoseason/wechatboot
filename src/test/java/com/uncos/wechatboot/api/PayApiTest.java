@@ -20,12 +20,11 @@ import com.uncos.wechatboot.common.TradeType;
 import com.uncos.wechatboot.exception.PayException;
 import com.uncos.wechatboot.exception.PayResultException;
 import com.uncos.wechatboot.utils.Converter;
+import com.uncos.wechatboot.utils.DateUtils;
 import com.uncos.wechatboot.utils.RandomStringGenerator;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * 支付API测试
@@ -48,8 +47,7 @@ public class PayApiTest {
         unifiedorderRequest.setOutTradeNo(outTradeNo); // 我们自己的交易订单号
         unifiedorderRequest.setTotalFee(1); // 钱，单位是分
         unifiedorderRequest.setSpbillCreateIp("127.0.0.1");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-        unifiedorderRequest.setTimeStart(sdf.format(new Date()));
+        unifiedorderRequest.setTimeStart(DateUtils.format("yyyyMMddHHmmss"));
         unifiedorderRequest.setTradeType(TradeType.JSAPI);
         unifiedorderRequest.setOpenid("o40dZwL6Ik_ZsDfANjkAqd5MPpN4");
         unifiedorderRequest.setNotifyUrl("http://uncoseason.xicp.net/eduboss/WeiXinController/payCallback.do");
@@ -141,8 +139,7 @@ public class PayApiTest {
         unifiedorderRequest.setOutTradeNo(RandomStringGenerator.generate()); // 我们自己的交易订单号
         unifiedorderRequest.setTotalFee(1); // 钱，单位是分
         unifiedorderRequest.setSpbillCreateIp("127.0.0.1");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-        unifiedorderRequest.setTimeStart(sdf.format(new Date()));
+        unifiedorderRequest.setTimeStart(DateUtils.format("yyyyMMddHHmmss"));
         unifiedorderRequest.setTradeType(TradeType.NATIVE);
         unifiedorderRequest.setOpenid("o40dZwL6Ik_ZsDfANjkAqd5MPpN4");
         unifiedorderRequest.setNotifyUrl("http://uncoseason.xicp.net/eduboss/WeiXinController/payCallback.do");

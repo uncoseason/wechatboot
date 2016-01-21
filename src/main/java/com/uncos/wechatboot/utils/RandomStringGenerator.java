@@ -1,6 +1,7 @@
 package com.uncos.wechatboot.utils;
 
 import java.util.Random;
+import java.util.UUID;
 
 /**
  * 随机字符串生成器
@@ -33,6 +34,24 @@ public class RandomStringGenerator {
      */
     public static String generate() {
         return generate(defaultLength);
+    }
+
+    /**
+     * 生成uuid
+     *
+     * @return 36位字符串
+     */
+    public static String uuid() {
+        return UUID.randomUUID().toString();
+    }
+
+    /**
+     * 生成uuid（去除连接线）
+     *
+     * @return 32位字符串
+     */
+    public static String uuidWithoutSymbol() {
+        return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
 }

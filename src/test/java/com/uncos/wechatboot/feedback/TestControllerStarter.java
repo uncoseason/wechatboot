@@ -11,6 +11,7 @@ import com.uncos.wechatboot.common.TradeType;
 import com.uncos.wechatboot.exception.PayException;
 import com.uncos.wechatboot.exception.PayResultException;
 import com.uncos.wechatboot.utils.Converter;
+import com.uncos.wechatboot.utils.DateUtils;
 import com.uncos.wechatboot.utils.RandomStringGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,8 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Created by xuwen on 2016/1/16.
@@ -67,8 +66,7 @@ public class TestControllerStarter {
         unifiedorderRequest.setOutTradeNo(RandomStringGenerator.generate()); // 我们自己的交易订单号
         unifiedorderRequest.setTotalFee(1); // 钱，单位是分
         unifiedorderRequest.setSpbillCreateIp("127.0.0.1");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-        unifiedorderRequest.setTimeStart(sdf.format(new Date()));
+        unifiedorderRequest.setTimeStart(DateUtils.format("yyyyMMddHHmmss"));
         unifiedorderRequest.setTradeType(TradeType.NATIVE);
         unifiedorderRequest.setOpenid("o40dZwL6Ik_ZsDfANjkAqd5MPpN4");
         unifiedorderRequest.setNotifyUrl("http://uncoseason.xicp.net/payResultNotify");
@@ -95,8 +93,7 @@ public class TestControllerStarter {
         unifiedorderRequest.setOutTradeNo(RandomStringGenerator.generate()); // 我们自己的交易订单号
         unifiedorderRequest.setTotalFee(1); // 钱，单位是分
         unifiedorderRequest.setSpbillCreateIp("127.0.0.1");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-        unifiedorderRequest.setTimeStart(sdf.format(new Date()));
+        unifiedorderRequest.setTimeStart(DateUtils.format("yyyyMMddHHmmss"));
         unifiedorderRequest.setTradeType(TradeType.JSAPI);
         unifiedorderRequest.setOpenid("o40dZwL6Ik_ZsDfANjkAqd5MPpN4");
         unifiedorderRequest.setNotifyUrl("http://uncoseason.xicp.net/payResultNotify");
