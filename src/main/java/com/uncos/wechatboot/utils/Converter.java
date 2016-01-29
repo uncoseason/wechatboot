@@ -1,5 +1,6 @@
 package com.uncos.wechatboot.utils;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,8 +23,10 @@ public class Converter {
     private static XmlMapper xmlMapper = new XmlMapper();
 
     static {
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        xmlMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         xmlMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         xmlMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
