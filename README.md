@@ -1,5 +1,8 @@
 wechatboot
 ========
+#未完成功能
+* 自动刷新token
+* api返回-1时自动重试
 #开始
 ##配置
 Classpath下加入wechatboot.properties
