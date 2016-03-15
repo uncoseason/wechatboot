@@ -1,8 +1,5 @@
 wechatboot
 ========
-#未完成功能
-* 自动刷新token
-* api返回-1时自动重试
 #开始
 ##配置
 Classpath下加入wechatboot.properties
@@ -117,6 +114,9 @@ public String wechatbootServlet(HttpServletRequest httpServletRequest) {
 ```java
 Wechatboot.messageApi().sendTextMessage("ouP0Yv3rPy5xPnzLD45g3psCJqZQ", "主动发送一个文本消息");
 ```
+#未完成功能
+* 自动刷新token
+* api返回-1时自动重试
 
 #其他
 * 欢迎fork
